@@ -449,14 +449,14 @@ SDL_RWFromFile(const char *file, const char *mode)
     rwops = SDL_AllocRW();
     if (!rwops)
         return NULL;            /* SDL_SetError already setup by SDL_AllocRW() */
-    if (Android_JNI_FileOpen(rwops, file, mode) < 0) {
+    if (Android_FileOpen(rwops, file, mode) < 0) {
         SDL_FreeRW(rwops);
         return NULL;
     }
-    rwops->seek = Android_JNI_FileSeek;
-    rwops->read = Android_JNI_FileRead;
-    rwops->write = Android_JNI_FileWrite;
-    rwops->close = Android_JNI_FileClose;
+    rwops->seek = Android_FileSeek;
+    rwops->read = Android_FileRead;
+    rwops->write = Android_FileWrite;
+    rwops->close = Android_FileClose;
 
 #elif defined(__WIN32__)
     rwops = SDL_AllocRW();
