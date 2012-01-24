@@ -15,6 +15,7 @@ public:
 	bool createEGLSurface();
 	bool createEGLContext();
 	bool initEGL(int majorVersion, int minorVersion);
+	void startApp();
 	void flipBuffers();
 	bool createGLContext(int majorVersion, int minorVersion);
 	static Context* GetContext();

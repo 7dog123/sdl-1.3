@@ -54,17 +54,6 @@ public class SDLActivity extends Activity {
         mSingleton.sendCommand(COMMAND_CHANGE_TITLE, title);
     }
 
-    public static void startApp() {
-        // Start up the C app thread
-        if (mSDLThread == null) {
-            mSDLThread = new Thread(new SDLMain(), "SDLThread");
-            mSDLThread.start();
-        }
-        else {
-            SDLActivity.nativeResume();
-        }
-    }
-
     // Audio
     private static Object buf;
     

@@ -64,6 +64,18 @@ Context* Context::GetContext()
 {
 	return mSingleton;
 }
+
+void Context::startApp()
+{
+	// Start up the C app thread
+	if (!mSDLThread) {
+		mSDLThread = SDL_CreateThread(SDLMain, "SDLThread", this);
+	}
+	else {
+		nativeResume();
+	}
+}
+
 bool Context::eglLog(const char* name)
 {
 	LOGE(name);
