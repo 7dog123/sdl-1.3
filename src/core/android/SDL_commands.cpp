@@ -35,6 +35,7 @@ void Context::Commands::windowInit()
 	mContext.createEGLSurface();
 
     mSensors.Init();
+    mContext.onCreate(mpApp);
 }
 
 //
@@ -193,6 +194,7 @@ void Context::Commands::systemMemoryLow()
 void Context::Commands::activityStarted()
 {
 	_activateInput();
+	mContext.onStart(mpApp);
 }
 
 //
@@ -201,6 +203,7 @@ void Context::Commands::activityStarted()
 void Context::Commands::activityResumed()
 {
 	_activateInput();
+	mContext.onResume(mpApp);
 }
 
 //
@@ -222,7 +225,7 @@ void Context::Commands::activityPaused()
 {
 	_deactivateInput();
 	mSensors.Stop();
-	mContext.nativePause();
+	mContext.onPause(mpApp);
 }
 
 //
@@ -239,6 +242,7 @@ void Context::Commands::activityStopped()
 //
 void Context::Commands::activityDestroy()
 {
+	mContext.onDestroy(mpApp);
 	delete &mContext;
 }
 

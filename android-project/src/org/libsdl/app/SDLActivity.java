@@ -3,9 +3,6 @@ public class SDLActivity extends Activity {
     // Main components
     private static SDLSurface mSurface;
 
-    // This is what SDL runs in. It invokes SDL_main(), eventually
-    private static Thread mSDLThread;
-
     // Audio
     private static Thread mAudioThread;
     private static AudioTrack mAudioTrack;
@@ -19,45 +16,10 @@ public class SDLActivity extends Activity {
         System.loadLibrary("main");
     }
 
-        super.onCreate(savedInstanceState);
-        
-
         // Set up the surface
         mSurface = new SDLSurface(getApplication());
         setContentView(mSurface);
         SurfaceHolder holder = mSurface.getHolder();
-
-    // Events
-    protected void onPause() {
-        Log.v("SDL", "onPause()");
-        super.onPause();
-        SDLActivity.nativePause();
-    }
-
-    protected void onResume() {
-        Log.v("SDL", "onResume()");
-        super.onResume();
-        SDLActivity.nativeResume();
-    }
-
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.v("SDL", "onDestroy()");
-        // Send a quit message to the application
-        SDLActivity.nativeQuit();
-
-        // Now wait for the SDL thread to quit
-        if (mSDLThread != null) {
-            try {
-                mSDLThread.join();
-            } catch(Exception e) {
-                Log.v("SDL", "Problem stopping thread: " + e);
-            }
-            mSDLThread = null;
-
-            //Log.v("SDL", "Finished waiting for SDL thread");
-        }
-    }
 
     // Messages from the SDLMain thread
     static int COMMAND_CHANGE_TITLE = 1;
@@ -79,11 +41,6 @@ public class SDLActivity extends Activity {
         commandHandler.sendMessage(msg);
     }
 
-    // C functions we call
-    public static native void nativeInit();
-    public static native void nativeQuit();
-    public static native void nativePause();
-    public static native void nativeResume();
     public static native void onNativeResize(int x, int y, int format);
     public static native void onNativeKeyDown(int keycode);
     public static native void onNativeKeyUp(int keycode);
@@ -92,11 +49,6 @@ public class SDLActivity extends Activity {
                                             float y, float p);
     public static native void onNativeAccel(float x, float y, float z);
     public static native void nativeRunAudioThread();
-
-
-    // Java functions called from C
-
-
     public static void setActivityTitle(String title) {
         // Called from SDLMain() thread and can't directly affect the view
         mSingleton.sendCommand(COMMAND_CHANGE_TITLE, title);

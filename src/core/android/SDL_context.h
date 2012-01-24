@@ -19,10 +19,17 @@ public:
 	bool createGLContext(int majorVersion, int minorVersion);
 	static Context* GetContext();
 protected:
+	void onCreate(android_app* app);
+	void onStart(android_app* app);
+	void onPause(android_app* app);
+	void onResume(android_app* app);
+	void onDestroy(android_app* app);
 private:
 
     static Context* mSingleton;
 
+    // This is what SDL runs in. It invokes SDL_main(), eventually
+    SDL_Thread* mSDLThread;
     Sensors mSensors;
 
     // EGL private objects

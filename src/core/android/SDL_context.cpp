@@ -12,6 +12,42 @@ void Context::onCreate(android_app* app)
 	//LOGV("onCreate()");
 	mSingleton = this;
 }
+
+void Context::onStart(android_app* app)
+{
+}
+
+// Events
+void Context::onPause(android_app* app)
+{
+	LOGV("onPause()");
+	nativePause();
+}
+
+void Context::onResume(android_app* app)
+{
+	LOGV("onResume()");
+	nativeResume();
+}
+
+void Context::onDestroy(android_app* app)
+{
+	LOGV("onDestroy()");
+	// Send a quit message to the application
+	nativeQuit();
+
+	// Now wait for the SDL thread to quit
+	if (!mSDLThread)
+		return;
+
+	int status;
+	SDL_WaitThread(mSDLThread, &status);
+	//Log.v("SDL", "Problem stopping thread: " + e);
+	mSDLThread = nullptr;
+
+	//Log.v("SDL", "Finished waiting for SDL thread");
+}
+
 // Java functions called from C
 bool Context::createGLContext(int majorVersion, int minorVersion)
 {

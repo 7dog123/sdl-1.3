@@ -161,31 +161,28 @@ extern "C" void Java_org_libsdl_app_SDLActivity_onNativeAccel(
 }
 
 // Quit
-extern "C" void Java_org_libsdl_app_SDLActivity_nativeQuit(
-                                    JNIEnv* env, jclass cls)
-{    
+void Context::nativeQuit()
+{
     // Inject a SDL_QUIT event
     SDL_SendQuit();
 }
 
 // Pause
-extern "C" void Java_org_libsdl_app_SDLActivity_nativePause(
-                                    JNIEnv* env, jclass cls)
+void Context::nativePause()
 {
-    if (Android_Window) {
-        SDL_SendWindowEvent(Android_Window, SDL_WINDOWEVENT_FOCUS_LOST, 0, 0);
-        SDL_SendWindowEvent(Android_Window, SDL_WINDOWEVENT_MINIMIZED, 0, 0);
-    }
+    if (!Android_Window)
+        return;
+    SDL_SendWindowEvent(Android_Window, SDL_WINDOWEVENT_FOCUS_LOST, 0, 0);
+    SDL_SendWindowEvent(Android_Window, SDL_WINDOWEVENT_MINIMIZED, 0, 0);
 }
 
 // Resume
-extern "C" void Java_org_libsdl_app_SDLActivity_nativeResume(
-                                    JNIEnv* env, jclass cls)
+void Context::nativeResume()
 {
-    if (Android_Window) {
-        SDL_SendWindowEvent(Android_Window, SDL_WINDOWEVENT_FOCUS_GAINED, 0, 0);
-        SDL_SendWindowEvent(Android_Window, SDL_WINDOWEVENT_RESTORED, 0, 0);
-    }
+    if (!Android_Window)
+        return;
+    SDL_SendWindowEvent(Android_Window, SDL_WINDOWEVENT_FOCUS_GAINED, 0, 0);
+    SDL_SendWindowEvent(Android_Window, SDL_WINDOWEVENT_RESTORED, 0, 0);
 }
 
 extern "C" void Java_org_libsdl_app_SDLActivity_nativeRunAudioThread(
