@@ -17,6 +17,7 @@ public:
 	bool initEGL(int majorVersion, int minorVersion);
 	void flipBuffers();
 	bool createGLContext(int majorVersion, int minorVersion);
+	static Context* GetContext();
 protected:
 private:
 

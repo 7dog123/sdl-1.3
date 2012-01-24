@@ -6,6 +6,12 @@ Context::Context() :
 {
 }
 
+    // Setup
+void Context::onCreate(android_app* app)
+{
+	//LOGV("onCreate()");
+	mSingleton = this;
+}
 // Java functions called from C
 bool Context::createGLContext(int majorVersion, int minorVersion)
 {
@@ -17,6 +23,11 @@ void Context::flipBuffers()
         flipEGL();
 }
 
+
+Context* Context::GetContext()
+{
+	return mSingleton;
+}
 bool Context::eglLog(const char* name)
 {
 	LOGE(name);

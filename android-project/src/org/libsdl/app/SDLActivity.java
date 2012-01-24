@@ -19,19 +19,13 @@ public class SDLActivity extends Activity {
         System.loadLibrary("main");
     }
 
-    // Setup
-    protected void onCreate(Bundle savedInstanceState) {
-        //Log.v("SDL", "onCreate()");
         super.onCreate(savedInstanceState);
         
-        // So we can call stuff from static callbacks
-        mSingleton = this;
 
         // Set up the surface
         mSurface = new SDLSurface(getApplication());
         setContentView(mSurface);
         SurfaceHolder holder = mSurface.getHolder();
-    }
 
     // Events
     protected void onPause() {
@@ -106,10 +100,6 @@ public class SDLActivity extends Activity {
     public static void setActivityTitle(String title) {
         // Called from SDLMain() thread and can't directly affect the view
         mSingleton.sendCommand(COMMAND_CHANGE_TITLE, title);
-    }
-
-    public static Context getContext() {
-        return mSingleton;
     }
 
     public static void startApp() {
