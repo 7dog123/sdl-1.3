@@ -18,6 +18,8 @@
      misrepresented as being the original software.
   3. This notice may not be removed or altered from any source distribution.
 */
+#ifndef SDL_ANDROID_ANDROID_H_
+#define SDL_ANDROID_ANDROID_H_
 #include "SDL_config.h"
 
 /* Set up for C function definitions, even when using C++ */
@@ -53,5 +55,7 @@ int Android_JNI_FileClose(SDL_RWops* ctx);
 }
 /* *INDENT-ON* */
 #endif
+
+#endif //SDL_ANDROID_ANDROID_H_
 
 /* vi: set ts=4 sw=4 expandtab: */
