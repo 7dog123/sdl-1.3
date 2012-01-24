@@ -8,7 +8,7 @@ extends Base
 	// Audio
 	private static Object buf;
 
-	public static Object audioInit(int sampleRate, boolean is16Bit, boolean isStereo, int desiredFrames) {
+	public static Array init(int sampleRate, boolean is16Bit, boolean isStereo, int desiredFrames) {
 	    int channelConfig = isStereo ? AudioFormat.CHANNEL_CONFIGURATION_STEREO : AudioFormat.CHANNEL_CONFIGURATION_MONO;
 	    int audioFormat = is16Bit ? AudioFormat.ENCODING_PCM_16BIT : AudioFormat.ENCODING_PCM_8BIT;
 	    int frameSize = (isStereo ? 2 : 1) * (is16Bit ? 2 : 1);
@@ -35,7 +35,7 @@ extends Base
 	    return buf;
 	}
 	
-	public static void audioWriteShortBuffer(short[] buffer) {
+	public static void writeBuffer(short[] buffer) {
 	    for (int i = 0; i < buffer.length; ) {
 	        int result = mAudioTrack.write(buffer, i, buffer.length - i);
 	        if (result > 0) {
@@ -53,7 +53,7 @@ extends Base
 	    }
 	}
 	
-	public static void audioWriteByteBuffer(byte[] buffer) {
+	public static void writeBuffer(byte[] buffer) {
 	    for (int i = 0; i < buffer.length; ) {
 	        int result = mAudioTrack.write(buffer, i, buffer.length - i);
 	        if (result > 0) {
@@ -71,7 +71,7 @@ extends Base
 	    }
 	}
 	
-	public static void audioQuit() {
+	public static void quit() {
 	    if (mAudioThread != null) {
 	        try {
 	            mAudioThread.join();
