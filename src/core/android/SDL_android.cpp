@@ -61,8 +61,6 @@ static JavaVM* mJavaVM;
 static jclass mActivityClass;
 
 // method signatures
-static jmethodID midCreateGLContext;
-static jmethodID midFlipBuffers;
 static jmethodID midAudioInit;
 static jmethodID midAudioWriteShortBuffer;
 static jmethodID midAudioWriteByteBuffer;
@@ -205,16 +203,12 @@ extern "C" void Java_org_libsdl_app_SDLActivity_nativeRunAudioThread(
 *******************************************************************************/
 extern "C" SDL_bool Android_JNI_CreateContext(int majorVersion, int minorVersion)
 {
-    if (mEnv->CallStaticBooleanMethod(mActivityClass, midCreateGLContext, majorVersion, minorVersion)) {
-        return SDL_TRUE;
-    } else {
-        return SDL_FALSE;
-    }
+    return Context::GetContext()->createGLContext(majorVersion, minorVersion);
 }
 
 extern "C" void Android_JNI_SwapWindow()
 {
-    mEnv->CallStaticVoidMethod(mActivityClass, midFlipBuffers); 
+    Context::GetContext()->flipBuffers();
 }
 
 extern "C" void Android_JNI_SetActivityTitle(const char *title)
