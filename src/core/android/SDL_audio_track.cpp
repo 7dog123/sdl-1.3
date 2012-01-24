@@ -46,7 +46,7 @@ int AudioTrack::Init(int sampleRate, bool is16Bit, Uint8 channelCount, int desir
     status = mJavaVM->GetEnv((void **) &env, JNI_VERSION_1_4);
     if(status < 0) {
         LOGE("callback_handler: failed to get JNI environment, assuming native thread");
-        status = mJavaVM->AttachCurrentThread(&env, NULL);
+        status = mJavaVM->AttachCurrentThread(&env, nullptr);
         if(status < 0) {
             LOGE("callback_handler: failed to attach current thread");
             return 0;
@@ -61,7 +61,7 @@ int AudioTrack::Init(int sampleRate, bool is16Bit, Uint8 channelCount, int desir
 
     mAudioBuffer = env->CallStaticObjectMethod(mActivityClass, midAudioInit, sampleRate, mIs16Bit, mIsStereo, desiredBufferFrames);
 
-    if (mAudioBuffer == NULL) {
+    if (mAudioBuffer == nullptr) {
         __android_log_print(ANDROID_LOG_WARN, "SDL", "SDL audio: didn't get back a good audio buffer!");
         return 0;
     }
@@ -94,7 +94,7 @@ void AudioTrack::Run(std::function<void ()> func)
     jint status = mJavaVM->GetEnv((void **)&mAudioEnv, JNI_VERSION_1_4);
     if(status < 0) {
         LOGE("callback_handler: failed to get JNI environment, assuming native thread");
-        status = mJavaVM->AttachCurrentThread(&mAudioEnv, NULL);
+        status = mJavaVM->AttachCurrentThread(&mAudioEnv, nullptr);
         if(status < 0) {
             LOGE("callback_handler: failed to attach current thread");
         }
@@ -141,7 +141,7 @@ void AudioTrack::Quit()
     status = mJavaVM->GetEnv((void **) &env, JNI_VERSION_1_4);
     if(status < 0) {
         LOGE("callback_handler: failed to get JNI environment, assuming native thread");
-        status = mJavaVM->AttachCurrentThread(&env, NULL);
+        status = mJavaVM->AttachCurrentThread(&env, nullptr);
         if(status < 0) {
             LOGE("callback_handler: failed to attach current thread");
             return;
@@ -153,8 +153,8 @@ void AudioTrack::Quit()
 
     if (mAudioBuffer) {
         env->DeleteGlobalRef(mAudioBuffer);
-        mAudioBuffer = NULL;
-        mpAudioBufferPinned = NULL;
+        mAudioBuffer = nullptr;
+        mpAudioBufferPinned = nullptr;
     }
 
     if (isAttached) {
