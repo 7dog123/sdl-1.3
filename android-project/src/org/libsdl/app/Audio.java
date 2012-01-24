@@ -1,4 +1,4 @@
-package org.sdl.android;
+package org.libsdl.android;
 
 public class Audio
 {
