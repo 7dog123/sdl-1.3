@@ -2,4 +2,4 @@
 #ifndef SDL_ANDROID_ASSERT_H_
 #define SDL_ANDROID_ASSERT_H_
 
-#endif //SDL_ANDROID_ASSERT_H_
+#endif // SDL_ANDROID_ASSERT_H_

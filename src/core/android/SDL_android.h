@@ -56,6 +56,6 @@ int Android_JNI_FileClose(SDL_RWops* ctx);
 /* *INDENT-ON* */
 #endif
 
-#endif //SDL_ANDROID_ANDROID_H_
+#endif // SDL_ANDROID_ANDROID_H_
 
 /* vi: set ts=4 sw=4 expandtab: */

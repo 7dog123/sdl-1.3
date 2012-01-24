@@ -2,4 +2,4 @@
 #ifndef SDL_ANDROID_BASE_H_
 #define SDL_ANDROID_BASE_H_
 
-#endif //SDL_ANDROID_BASE_H_
+#endif // SDL_ANDROID_BASE_H_
