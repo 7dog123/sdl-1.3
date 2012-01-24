@@ -5,9 +5,10 @@
 #include <SDL.h>
 #include <android/sensor.h>
 #include "SDL_subsystem.h"
-#include "SDL_context.h"
 
 namespace SDL{ namespace Android{
+class Context;
+
 class Sensors : public Subsystem
 {
 public:

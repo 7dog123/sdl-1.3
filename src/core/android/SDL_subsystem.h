@@ -3,9 +3,10 @@
 #define SDL_ANDROID_SUBSYSTEM_H_
 
 #include "SDL_base.h"
-#include "SDL_context.h"
 
 namespace SDL{ namespace Android{
+class Context;
+
 class Subsystem : public Base
 {
 public:
