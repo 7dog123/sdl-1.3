@@ -1,6 +1,9 @@
 
 #include "include.h"
 #include "SDL_audio.h"
+#include "SDL_audio_osles.h"
+#include "SDL_audio_track.h"
+
 Audio::Audio(Context& context) :
 	Subsystem(context),
 	mAudioThread(nullptr),
@@ -51,6 +54,15 @@ extern "C" int Android_OpenAudioDevice(int sampleRate, int is16Bit, Uint8 channe
 {
 	Audio* pAudio;
 	Context& context = Context::GetContext();
+
+	try
+	{
+		pAudio = new OSLES(context);
+	}
+	catch( ... )
+	{
+		pAudio = new AudioTrack(context, GLOBAL_ANDROID_APP);
+	}
 
 	context.SetAudio(pAudio);
 
