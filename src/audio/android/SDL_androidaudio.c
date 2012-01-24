@@ -89,7 +89,7 @@ AndroidAUD_OpenDevice(_THIS, const char *devname, int iscapture)
     }
 
     // TODO: pass in/return a (Java) device ID, also whether we're opening for input or output
-    this->spec.samples = Android_JNI_OpenAudioDevice(this->spec.freq, this->spec.format == AUDIO_U8 ? 0 : 1, this->spec.channels, this->spec.samples);
+    this->spec.samples = Android_OpenAudioDevice(this->spec.freq, this->spec.format == AUDIO_U8 ? 0 : 1, this->spec.channels, this->spec.samples);
     SDL_CalculateAudioSpec(&this->spec);
 
     if (this->spec.samples == 0) {
@@ -104,13 +104,13 @@ AndroidAUD_OpenDevice(_THIS, const char *devname, int iscapture)
 static void
 AndroidAUD_PlayDevice(_THIS)
 {
-    Android_JNI_WriteAudioBuffer();
+    Android_WriteAudioBuffer();
 }
 
 static Uint8 *
 AndroidAUD_GetDeviceBuf(_THIS)
 {
-    return Android_JNI_GetAudioBuffer();
+    return Android_GetAudioBuffer();
 }
 
 static void
@@ -120,7 +120,7 @@ AndroidAUD_CloseDevice(_THIS)
     	SDL_free(this->hidden);
     	this->hidden = NULL;
     }
-	Android_JNI_CloseAudioDevice();
+	Android_CloseAudioDevice();
 
     if (audioDevice == this) {
     	audioDevice = NULL;

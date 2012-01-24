@@ -21,6 +21,7 @@
 #ifndef SDL_ANDROID_ANDROID_H_
 #define SDL_ANDROID_ANDROID_H_
 #include "SDL_config.h"
+#include "SDL_audio.h"
 
 /* Set up for C function definitions, even when using C++ */
 #ifdef __cplusplus
@@ -34,11 +35,6 @@ SDL_bool Android_CreateContext(int majorVersion, int minorVersion);
 void Android_SwapWindow();
 void Android_SetActivityTitle(const char *title);
 SDL_bool Android_GetAccelerometerValues(float values[3]);
-// Audio support
-extern int Android_JNI_OpenAudioDevice(int sampleRate, int is16Bit, int channelCount, int desiredBufferFrames);
-extern void* Android_JNI_GetAudioBuffer();
-extern void Android_JNI_WriteAudioBuffer();
-extern void Android_JNI_CloseAudioDevice();
 
 /* Ends C function definitions when using C++ */
 #ifdef __cplusplus

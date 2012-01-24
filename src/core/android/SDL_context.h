@@ -20,6 +20,8 @@ public:
 	void flipBuffers();
 	bool createGLContext(int majorVersion, int minorVersion);
 	static Context* GetContext();
+    Audio* GetAudio();
+    void SetAudio(Audio* pAudio);
 protected:
 	void onCreate(android_app* app);
 	void onStart(android_app* app);
@@ -32,6 +34,9 @@ private:
 
     // This is what SDL runs in. It invokes SDL_main(), eventually
     SDL_Thread* mSDLThread;
+
+    // Audio
+    Audio* mpAudio;
     Sensors mSensors;
 
     // EGL private objects

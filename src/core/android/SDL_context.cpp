@@ -301,3 +301,13 @@ int32_t onInputEvent(struct android_app* app, AInputEvent* event)
 	}
 #undef CMD
 }
+
+Audio* Context::GetAudio()
+{
+	return mpAudio;
+}
+
+void Context::SetAudio(Audio* pAudio)
+{
+	mpAudio = pAudio;
+}
