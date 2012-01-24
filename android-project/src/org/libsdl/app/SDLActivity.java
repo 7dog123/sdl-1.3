@@ -2,10 +2,6 @@ public class SDLActivity extends Activity {
 
     // Main components
     private static SDLSurface mSurface;
-    private static Audio mAudio;
-
-    // Audio
-    private static Thread mAudioThread;
 
     // Load the .so
     static {

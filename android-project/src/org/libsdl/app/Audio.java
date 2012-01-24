@@ -34,19 +34,6 @@ public class Audio
 	    return buf;
 	}
 	
-	public static void audioStartThread() {
-	    mAudioThread = new Thread(new Runnable() {
-	        public void run() {
-	            mAudioTrack.play();
-	            nativeRunAudioThread();
-	        }
-	    });
-	    
-	    // I'd take REALTIME if I could get it!
-	    mAudioThread.setPriority(Thread.MAX_PRIORITY);
-	    mAudioThread.start();
-	}
-	
 	public static void audioWriteShortBuffer(short[] buffer) {
 	    for (int i = 0; i < buffer.length; ) {
 	        int result = mAudioTrack.write(buffer, i, buffer.length - i);
