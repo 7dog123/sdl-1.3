@@ -53,12 +53,6 @@ extern void Android_RunAudioThread();
 /*******************************************************************************
                                Globals
 *******************************************************************************/
-static JNIEnv* mEnv = NULL;
-static JNIEnv* mAudioEnv = NULL;
-static JavaVM* mJavaVM;
-
-// Main activity
-static jclass mActivityClass;
 
 // method signatures
 static jmethodID midAudioInit;
@@ -93,8 +87,6 @@ extern "C" void SDL_Android_Init(JNIEnv* env, jclass cls)
 {
     __android_log_print(ANDROID_LOG_INFO, "SDL", "SDL_Android_Init()");
 
-    mEnv = env;
-    mActivityClass = (jclass)env->NewGlobalRef(cls);
 
     midCreateGLContext = mEnv->GetStaticMethodID(mActivityClass,
                                 "createGLContext","(II)Z");
@@ -328,48 +320,6 @@ extern "C" void Android_JNI_CloseAudioDevice()
     if (isAttached) {
         mJavaVM->DetachCurrentThread();
     }
-}
-
-// Test for an exception and call SDL_SetError with its detail if one occurs
-static bool Android_JNI_ExceptionOccurred()
-{
-    jthrowable exception = mEnv->ExceptionOccurred();
-    if (exception != NULL) {
-        jmethodID mid;
-
-        // Until this happens most JNI operations have undefined behaviour
-        mEnv->ExceptionClear();
-
-        jclass exceptionClass = mEnv->GetObjectClass(exception);
-        jclass classClass = mEnv->FindClass("java/lang/Class");
-
-        mid = mEnv->GetMethodID(classClass, "getName", "()Ljava/lang/String;");
-        jstring exceptionName = (jstring)mEnv->CallObjectMethod(exceptionClass, mid);
-        const char* exceptionNameUTF8 = mEnv->GetStringUTFChars(exceptionName, 0);
-
-        mid = mEnv->GetMethodID(exceptionClass, "getMessage", "()Ljava/lang/String;");
-        jstring exceptionMessage = (jstring)mEnv->CallObjectMethod(exception, mid);
-
-        if (exceptionMessage != NULL) {
-            const char* exceptionMessageUTF8 = mEnv->GetStringUTFChars(
-                    exceptionMessage, 0);
-            SDL_SetError("%s: %s", exceptionNameUTF8, exceptionMessageUTF8);
-            mEnv->ReleaseStringUTFChars(exceptionMessage, exceptionMessageUTF8);
-            mEnv->DeleteLocalRef(exceptionMessage);
-        } else {
-            SDL_SetError("%s", exceptionNameUTF8);
-        }
-
-        mEnv->ReleaseStringUTFChars(exceptionName, exceptionNameUTF8);
-        mEnv->DeleteLocalRef(exceptionName);
-        mEnv->DeleteLocalRef(classClass);
-        mEnv->DeleteLocalRef(exceptionClass);
-        mEnv->DeleteLocalRef(exception);
-
-        return true;
-    }
-
-    return false;
 }
 
 #endif /* __ANDROID__ */
