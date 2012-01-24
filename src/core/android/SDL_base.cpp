@@ -23,6 +23,11 @@ void Base::LOGW(const char* message)
 	Log(ANDROID_LOG_WARN, message);
 }
 
+void Base::LOGI(const char* message)
+{
+	Log(ANDROID_LOG_INFO, message);
+}
+
 void Base::LOGV(const std::string& message)
 {
 	LOGV(message.c_str());
@@ -36,6 +41,11 @@ void Base::LOGE(const std::string& message)
 void Base::LOGW(const std::string& message)
 {
 	LOGW(message.c_str());
+}
+
+void Base::LOGI(const std::string& message)
+{
+	LOGI(message.c_str());
 }
 
 void Base::LOGVF(const char *fmt, ...)
@@ -59,6 +69,14 @@ void Base::LOGWF(const char *fmt, ...)
 	va_list vl;
 	va_start(vl, fmt);
 	Log(ANDROID_LOG_WARN, fmt, vl);
+	va_end(vl);
+}
+
+void Base::LOGIF(const char *fmt, ...)
+{
+	va_list vl;
+	va_start(vl, fmt);
+	Log(ANDROID_LOG_INFO, fmt, vl);
 	va_end(vl);
 }
 

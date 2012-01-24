@@ -11,14 +11,17 @@ protected:
 	static void LOGV(const char* message);
 	static void LOGE(const char* message);
 	static void LOGW(const char* message);
+	static void LOGI(const char* message);
 
 	static void LOGV(const std::string& message);
 	static void LOGE(const std::string& message);
 	static void LOGW(const std::string& message);
+	static void LOGI(const std::string& message);
 
 	static void LOGVF(const char *fmt, ...);
 	static void LOGEF(const char *fmt, ...);
 	static void LOGWF(const char *fmt, ...);
+	static void LOGIF(const char *fmt, ...);
 
 	Context& mContext;
 
