@@ -8,23 +8,23 @@ class Base
 protected:
 	Base(Context& context);
 
-	void LOGV(const char* message);
-	void LOGE(const char* message);
-	void LOGW(const char* message);
+	static void LOGV(const char* message);
+	static void LOGE(const char* message);
+	static void LOGW(const char* message);
 
-	void LOGV(const std::string& message);
-	void LOGE(const std::string& message);
-	void LOGW(const std::string& message);
+	static void LOGV(const std::string& message);
+	static void LOGE(const std::string& message);
+	static void LOGW(const std::string& message);
 
-	void LOGVF(const char *fmt, ...);
-	void LOGEF(const char *fmt, ...);
-	void LOGWF(const char *fmt, ...);
+	static void LOGVF(const char *fmt, ...);
+	static void LOGEF(const char *fmt, ...);
+	static void LOGWF(const char *fmt, ...);
 
 	Context& mContext;
 
 private:
-	void Log(int prio, const char* message);
-	void Log(int prio, const char* fmt, va_list ap);
+	static void Log(int prio, const char* message);
+	static void Log(int prio, const char* fmt, va_list ap);
 };
 }}
 
