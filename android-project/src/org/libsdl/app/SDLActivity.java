@@ -10,13 +10,6 @@ public class SDLActivity extends Activity {
     private static Thread mAudioThread;
     private static AudioTrack mAudioTrack;
 
-    // EGL private objects
-    private static EGLContext  mEGLContext;
-    private static EGLSurface  mEGLSurface;
-    private static EGLDisplay  mEGLDisplay;
-    private static EGLConfig   mEGLConfig;
-    private static int mGLMajor, mGLMinor;
-
     // Load the .so
     static {
         System.loadLibrary("SDL");
@@ -109,13 +102,6 @@ public class SDLActivity extends Activity {
 
     // Java functions called from C
 
-    public static boolean createGLContext(int majorVersion, int minorVersion) {
-        return initEGL(majorVersion, minorVersion);
-    }
-
-    public static void flipBuffers() {
-        flipEGL();
-    }
 
     public static void setActivityTitle(String title) {
         // Called from SDLMain() thread and can't directly affect the view
@@ -134,127 +120,6 @@ public class SDLActivity extends Activity {
         }
         else {
             SDLActivity.nativeResume();
-        }
-    }
-
-    // EGL functions
-    public static boolean initEGL(int majorVersion, int minorVersion) {
-        if (SDLActivity.mEGLDisplay == null) {
-            //Log.v("SDL", "Starting up OpenGL ES " + majorVersion + "." + minorVersion);
-
-            try {
-                EGL10 egl = (EGL10)EGLContext.getEGL();
-
-                EGLDisplay dpy = egl.eglGetDisplay(EGL10.EGL_DEFAULT_DISPLAY);
-
-                int[] version = new int[2];
-                egl.eglInitialize(dpy, version);
-
-                int EGL_OPENGL_ES_BIT = 1;
-                int EGL_OPENGL_ES2_BIT = 4;
-                int renderableType = 0;
-                if (majorVersion == 2) {
-                    renderableType = EGL_OPENGL_ES2_BIT;
-                } else if (majorVersion == 1) {
-                    renderableType = EGL_OPENGL_ES_BIT;
-                }
-                int[] configSpec = {
-                    //EGL10.EGL_DEPTH_SIZE,   16,
-                    EGL10.EGL_RENDERABLE_TYPE, renderableType,
-                    EGL10.EGL_NONE
-                };
-                EGLConfig[] configs = new EGLConfig[1];
-                int[] num_config = new int[1];
-                if (!egl.eglChooseConfig(dpy, configSpec, configs, 1, num_config) || num_config[0] == 0) {
-                    Log.e("SDL", "No EGL config available");
-                    return false;
-                }
-                EGLConfig config = configs[0];
-
-                /*int EGL_CONTEXT_CLIENT_VERSION=0x3098;
-                int contextAttrs[] = new int[] { EGL_CONTEXT_CLIENT_VERSION, majorVersion, EGL10.EGL_NONE };
-                EGLContext ctx = egl.eglCreateContext(dpy, config, EGL10.EGL_NO_CONTEXT, contextAttrs);
-
-                if (ctx == EGL10.EGL_NO_CONTEXT) {
-                    Log.e("SDL", "Couldn't create context");
-                    return false;
-                }
-                SDLActivity.mEGLContext = ctx;*/
-                SDLActivity.mEGLDisplay = dpy;
-                SDLActivity.mEGLConfig = config;
-                SDLActivity.mGLMajor = majorVersion;
-                SDLActivity.mGLMinor = minorVersion;
-
-                SDLActivity.createEGLSurface();
-            } catch(Exception e) {
-                Log.v("SDL", e + "");
-                for (StackTraceElement s : e.getStackTrace()) {
-                    Log.v("SDL", s.toString());
-                }
-            }
-        }
-        else SDLActivity.createEGLSurface();
-
-        return true;
-    }
-
-    public static boolean createEGLContext() {
-        EGL10 egl = (EGL10)EGLContext.getEGL();
-        int EGL_CONTEXT_CLIENT_VERSION=0x3098;
-        int contextAttrs[] = new int[] { EGL_CONTEXT_CLIENT_VERSION, SDLActivity.mGLMajor, EGL10.EGL_NONE };
-        SDLActivity.mEGLContext = egl.eglCreateContext(SDLActivity.mEGLDisplay, SDLActivity.mEGLConfig, EGL10.EGL_NO_CONTEXT, contextAttrs);
-        if (SDLActivity.mEGLContext == EGL10.EGL_NO_CONTEXT) {
-            Log.e("SDL", "Couldn't create context");
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean createEGLSurface() {
-        if (SDLActivity.mEGLDisplay != null && SDLActivity.mEGLConfig != null) {
-            EGL10 egl = (EGL10)EGLContext.getEGL();
-            if (SDLActivity.mEGLContext == null) createEGLContext();
-
-            Log.v("SDL", "Creating new EGL Surface");
-            EGLSurface surface = egl.eglCreateWindowSurface(SDLActivity.mEGLDisplay, SDLActivity.mEGLConfig, SDLActivity.mSurface, null);
-            if (surface == EGL10.EGL_NO_SURFACE) {
-                Log.e("SDL", "Couldn't create surface");
-                return false;
-            }
-
-            if (!egl.eglMakeCurrent(SDLActivity.mEGLDisplay, surface, surface, SDLActivity.mEGLContext)) {
-                Log.e("SDL", "Old EGL Context doesnt work, trying with a new one");
-                createEGLContext();
-                if (!egl.eglMakeCurrent(SDLActivity.mEGLDisplay, surface, surface, SDLActivity.mEGLContext)) {
-                    Log.e("SDL", "Failed making EGL Context current");
-                    return false;
-                }
-            }
-            SDLActivity.mEGLSurface = surface;
-            return true;
-        }
-        return false;
-    }
-
-    // EGL buffer flip
-    public static void flipEGL() {
-        try {
-            EGL10 egl = (EGL10)EGLContext.getEGL();
-
-            egl.eglWaitNative(EGL10.EGL_CORE_NATIVE_ENGINE, null);
-
-            // drawing here
-
-            egl.eglWaitGL();
-
-            egl.eglSwapBuffers(SDLActivity.mEGLDisplay, SDLActivity.mEGLSurface);
-
-
-        } catch(Exception e) {
-            Log.v("SDL", "flipEGL(): " + e);
-            for (StackTraceElement s : e.getStackTrace()) {
-                Log.v("SDL", s.toString());
-            }
         }
     }
 
