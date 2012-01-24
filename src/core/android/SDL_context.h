@@ -3,6 +3,7 @@
 #define SDL_ANDROID_CONTEXT_H_
 
 #include "SDL_base.h"
+#include "SDL_sensors.h"
 namespace SDL{ namespace Android {
 class Context : public Base
 {
@@ -12,6 +13,7 @@ private:
 
     static Context* mSingleton;
 
+    Sensors mSensors;
 
     class Commands : public Base
     {

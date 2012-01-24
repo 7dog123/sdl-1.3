@@ -378,8 +378,6 @@ class SDLMain implements Runnable {
 class SDLSurface extends SurfaceView implements SurfaceHolder.Callback, 
     View.OnKeyListener, View.OnTouchListener, SensorEventListener  {
 
-    // Sensors
-    private static SensorManager mSensorManager;
 
     // Startup    
     public SDLSurface(Context context) {
@@ -391,8 +389,6 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
         requestFocus();
         setOnKeyListener(this); 
         setOnTouchListener(this);   
-
-        mSensorManager = (SensorManager)context.getSystemService("sensor");  
     }
 
     // Called when we have a valid drawing surface
@@ -402,31 +398,6 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 
     // unused
     public void onDraw(Canvas canvas) {}
-
-    // Sensor events
-    public void enableSensor(int sensortype, boolean enabled) {
-        // TODO: This uses getDefaultSensor - what if we have >1 accels?
-        if (enabled) {
-            mSensorManager.registerListener(this, 
-                            mSensorManager.getDefaultSensor(sensortype), 
-                            SensorManager.SENSOR_DELAY_GAME, null);
-        } else {
-            mSensorManager.unregisterListener(this, 
-                            mSensorManager.getDefaultSensor(sensortype));
-        }
-    }
-    
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        // TODO
-    }
-
-    public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            SDLActivity.onNativeAccel(event.values[0] / SensorManager.GRAVITY_EARTH,
-                                      event.values[1] / SensorManager.GRAVITY_EARTH,
-                                      event.values[2] / SensorManager.GRAVITY_EARTH);
-        }
-    }
 
 }
 
