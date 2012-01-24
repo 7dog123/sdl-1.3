@@ -27,7 +27,6 @@ import java.lang.*;
 public class SDLActivity extends Activity {
 
     // Main components
-    private static SDLActivity mSingleton;
     private static SDLSurface mSurface;
 
     // This is what SDL runs in. It invokes SDL_main(), eventually
