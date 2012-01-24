@@ -33,21 +33,12 @@ extern "C" {
 
 #include <android/log.h>
 #include "SDL_context.h"
-#define LOG_TAG "SDL_android"
-//#define LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
-//#define LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
-#define LOGI(...) do {} while (false)
-#define LOGE(...) do {} while (false)
 
 
 /* Implemented in audio/android/SDL_androidaudio.c */
 extern void Android_RunAudioThread();
 } // C
 
-/*******************************************************************************
- This file links the Java side of Android with libsdl
-*******************************************************************************/
-#include <jni.h>
 #include <android/log.h>
 
 
@@ -58,10 +49,6 @@ extern void Android_RunAudioThread();
 // Accelerometer data storage
 static float fLastAccelerometer[3];
 static bool bHasNewData;
-
-/*******************************************************************************
-                 Functions called by JNI
-*******************************************************************************/
 
 // Library init
 extern "C" jint JNI_OnLoad(JavaVM* vm, void* reserved)
@@ -82,11 +69,6 @@ extern "C" void SDL_Android_Init(JNIEnv* env, jclass cls)
 {
     __android_log_print(ANDROID_LOG_INFO, "SDL", "SDL_Android_Init()");
 
-
-    midCreateGLContext = mEnv->GetStaticMethodID(mActivityClass,
-                                "createGLContext","(II)Z");
-    midFlipBuffers = mEnv->GetStaticMethodID(mActivityClass,
-                                "flipBuffers","()V");
 
     bHasNewData = false;
 }
