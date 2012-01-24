@@ -20,6 +20,19 @@ public:
 	void flipBuffers();
 	bool createGLContext(int majorVersion, int minorVersion);
 	static Context* GetContext();
+	void nativeInit();
+    void nativeQuit();
+    void nativePause();
+    void nativeResume();
+    void nativeRunAudioThread();
+    void onNativeResize (int x, int y, int format);
+    void onNativeKeyDown(AInputEvent* pEvent);
+    void onNativeKeyUp  (AInputEvent* pEvent);
+    void onNativeTouch  (int32_t touchDevId, int32_t pointerFingerId,
+                         int32_t action, float x,
+                         float y, float p);
+    void onNativeAccel  (float x, float y, float z);
+
     Audio* GetAudio();
     void SetAudio(Audio* pAudio);
 protected:

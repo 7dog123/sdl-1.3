@@ -32,6 +32,7 @@ extern "C" {
 #include "../../video/android/SDL_androidvideo.h"
 
 #include <android/log.h>
+#include "SDL_context.h"
 #define LOG_TAG "SDL_android"
 //#define LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
 //#define LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
@@ -91,40 +92,34 @@ extern "C" void SDL_Android_Init(JNIEnv* env, jclass cls)
 }
 
 // Resize
-extern "C" void Java_org_libsdl_app_SDLActivity_onNativeResize(
-                                    JNIEnv* env, jclass jcls,
-                                    jint width, jint height, jint format)
+void Context::onNativeResize(int width, int height, int format)
 {
     Android_SetScreenResolution(width, height, format);
 }
 
 // Keydown
-extern "C" void Java_org_libsdl_app_SDLActivity_onNativeKeyDown(
-                                    JNIEnv* env, jclass jcls, jint keycode)
+void Context::onNativeKeyDown(AInputEvent* pEvent)
 {
+	const auto keycode = AKeyEvent_getKeyCode(pEvent);
     Android_OnKeyDown(keycode);
 }
 
 // Keyup
-extern "C" void Java_org_libsdl_app_SDLActivity_onNativeKeyUp(
-                                    JNIEnv* env, jclass jcls, jint keycode)
+void Context::onNativeKeyUp(AInputEvent* pEvent)
 {
+	const auto keycode = AKeyEvent_getKeyCode(pEvent);
     Android_OnKeyUp(keycode);
 }
 
 // Touch
-extern "C" void Java_org_libsdl_app_SDLActivity_onNativeTouch(
-                                    JNIEnv* env, jclass jcls,
-                                    jint touch_device_id_in, jint pointer_finger_id_in,
-                                    jint action, jfloat x, jfloat y, jfloat p)
+void Context::onNativeTouch(int32_t touch_device_id_in, int32_t pointer_finger_id_in,
+                            int32_t action, float x, float y, float p)
 {
     Android_OnTouch(touch_device_id_in, pointer_finger_id_in, action, x, y, p);
 }
 
 // Accelerometer
-extern "C" void Java_org_libsdl_app_SDLActivity_onNativeAccel(
-                                    JNIEnv* env, jclass jcls,
-                                    jfloat x, jfloat y, jfloat z)
+void Context::onNativeAccel(float x, float y, float z)
 {
     fLastAccelerometer[0] = x;
     fLastAccelerometer[1] = y;
