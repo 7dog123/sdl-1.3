@@ -150,3 +150,95 @@ void Context::flipEGL()
 	}
 }
 
+void onAppCmd(android_app* app, int32_t cmd)
+{
+	auto pContext = (Context*)app->userData;
+
+	pContext->mCommands.mpApp = app;
+#define CMD pContext->mCommands
+
+	switch( cmd )
+	{
+	case APP_CMD_INPUT_CHANGED:        CMD.inputQueueChanged();        break;
+	case APP_CMD_INIT_WINDOW:          CMD.windowInit();               break;
+	case APP_CMD_TERM_WINDOW:          CMD.windowTerminating();        break;
+	case APP_CMD_WINDOW_RESIZED:       CMD.windowResized();            break;
+	case APP_CMD_WINDOW_REDRAW_NEEDED: CMD.windowNeedsRedraw();        break;
+	case APP_CMD_CONTENT_RECT_CHANGED: CMD.windowContentAreaChanged(); break;
+	case APP_CMD_GAINED_FOCUS:         CMD.activityFocus();            break;
+	case APP_CMD_LOST_FOCUS:           CMD.activityUnfocus();          break;
+	case APP_CMD_CONFIG_CHANGED:       CMD.configurationChanged();     break;
+	case APP_CMD_LOW_MEMORY:           CMD.systemMemoryLow();          break;
+	case APP_CMD_START:                CMD.activityStarted();          break;
+	case APP_CMD_RESUME:               CMD.activityResumed();          break;
+	case APP_CMD_SAVE_STATE:           CMD.stateSave();                break;
+	case APP_CMD_PAUSE:                CMD.activityPaused();           break;
+	case APP_CMD_STOP:                 CMD.activityStopped();          break;
+
+#undef CMD
+
+
+#if 0
+	case APP_CMD_SAVE_STATE:
+		// We have to save the current state
+
+		hibernate(*pContext);
+		break;
+	case APP_CMD_INIT_WINDOW:
+		// The window is being shown, get it ready.
+		if (engine->app->window != NULL)
+		{
+			engine_init_display(engine);
+			engine_draw_frame(engine);
+		}
+		break;
+	case APP_CMD_TERM_WINDOW:
+		// The window is being hidden or closed, clean it up.
+		hibernate(*pContext);
+		//engine_term_display(engine);
+		break;
+	case APP_CMD_GAINED_FOCUS:
+		wakeup(*pContext);
+		break;
+	case APP_CMD_LOST_FOCUS:
+		hibernate(*pContext);
+/*
+	            // When our app loses focus, we stop monitoring the accelerometer.
+	            // This is to avoid consuming battery while not being used.
+	            if (engine->accelerometerSensor != NULL) {
+	                ASensorEventQueue_disableSensor(engine->sensorEventQueue,
+	                        engine->accelerometerSensor);
+	            }
+	            // Also stop animating.
+	            engine->animating = 0;
+	            engine_draw_frame(engine);
+	            break;
+	    }
+*/
+		break;
+#endif
+	}
+
+	pContext->mCommands.mpApp = nullptr;
+}
+
+int32_t onInputEvent(struct android_app* app, AInputEvent* event)
+{
+	auto pContext = (Context*)app->userData;
+
+	pContext->mCommands.mpApp = app;
+	auto type = AInputEvent_getType(event);
+#define CMD pContext->mCommands
+
+	switch( type )
+	{
+	case AINPUT_EVENT_TYPE_KEY:
+		return CMD.keyInput(event);
+	case AINPUT_EVENT_TYPE_MOTION:
+		return CMD.touchInput(event);
+	default:
+		pContext->LOGWF("Unknown Event: %i", type);
+		return 0;
+	}
+#undef CMD
+}
