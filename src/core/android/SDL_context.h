@@ -16,6 +16,7 @@ public:
 	bool createEGLContext();
 	bool initEGL(int majorVersion, int minorVersion);
 	void startApp();
+	void setActivityTitle(const std::string& title);
 	void flipBuffers();
 	bool createGLContext(int majorVersion, int minorVersion);
 	static Context* GetContext();

@@ -53,7 +53,7 @@ Android_CreateWindow(_THIS, SDL_Window * window)
 void
 Android_SetWindowTitle(_THIS, SDL_Window * window)
 {
-    Android_JNI_SetActivityTitle(window->title);
+    Android_SetActivityTitle(window->title);
 }
 
 void

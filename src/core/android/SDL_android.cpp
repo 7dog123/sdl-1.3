@@ -194,31 +194,22 @@ extern "C" void Java_org_libsdl_app_SDLActivity_nativeRunAudioThread(
     Android_RunAudioThread();
 }
 
-
-/*******************************************************************************
-             Functions called by SDL into Java
-*******************************************************************************/
-extern "C" SDL_bool Android_JNI_CreateContext(int majorVersion, int minorVersion)
+extern "C" SDL_bool Android_CreateContext(int majorVersion, int minorVersion)
 {
     return Context::GetContext()->createGLContext(majorVersion, minorVersion);
 }
 
-extern "C" void Android_JNI_SwapWindow()
+extern "C" void Android_SwapWindow()
 {
     Context::GetContext()->flipBuffers();
 }
 
-extern "C" void Android_JNI_SetActivityTitle(const char *title)
+extern "C" void Android_SetActivityTitle(const char *title)
 {
-    jmethodID mid;
-
-    mid = mEnv->GetStaticMethodID(mActivityClass,"setActivityTitle","(Ljava/lang/String;)V");
-    if (mid) {
-        mEnv->CallStaticVoidMethod(mActivityClass, mid, mEnv->NewStringUTF(title));
-    }
+    Context::GetContext()->setActivityTitle(title);
 }
 
-extern "C" SDL_bool Android_JNI_GetAccelerometerValues(float values[3])
+extern "C" SDL_bool Android_GetAccelerometerValues(float values[3])
 {
     int i;
     SDL_bool retval = SDL_FALSE;

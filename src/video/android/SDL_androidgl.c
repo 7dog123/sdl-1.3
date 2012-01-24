@@ -73,7 +73,7 @@ Android_GL_UnloadLibrary(_THIS)
 SDL_GLContext
 Android_GL_CreateContext(_THIS, SDL_Window * window)
 {
-    if (!Android_JNI_CreateContext(_this->gl_config.major_version,
+    if (!Android_CreateContext(_this->gl_config.major_version,
                                    _this->gl_config.minor_version)) {
         SDL_SetError("Couldn't create OpenGL context - see Android log for details");
         return NULL;
@@ -105,7 +105,7 @@ Android_GL_GetSwapInterval(_THIS)
 void
 Android_GL_SwapWindow(_THIS, SDL_Window * window)
 {
-    Android_JNI_SwapWindow();
+    Android_SwapWindow();
 }
 
 void
