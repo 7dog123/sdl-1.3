@@ -256,11 +256,6 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
         setOnTouchListener(this);   
     }
 
-    // Called when we have a valid drawing surface
-    public void surfaceCreated(SurfaceHolder holder) {
-        holder.setType(SurfaceHolder.SURFACE_TYPE_GPU);
-    }
-
     // unused
     public void onDraw(Canvas canvas) {}
 
