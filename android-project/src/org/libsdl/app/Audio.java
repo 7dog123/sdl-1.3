@@ -3,8 +3,8 @@ package org.libsdl.android;
 public class Audio
 extends Base
 {
-    private AudioTrack mAudioTrack;
-
+    private static AudioTrack mAudioTrack;
+    
 	// Audio
 	private static Object buf;
 
