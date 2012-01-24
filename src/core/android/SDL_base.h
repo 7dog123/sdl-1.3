@@ -3,6 +3,8 @@
 #define SDL_ANDROID_BASE_H_
 
 namespace SDL{ namespace Android{
+class Context;
+
 class Base
 {
 protected:
