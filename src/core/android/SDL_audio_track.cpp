@@ -21,6 +21,12 @@ AudioTrack::AudioTrack(Context& context, android_app* app) :
 	midAudioPlay(
 		mEnv->GetStaticMethodID(mActivityClass,
 		                        "play", "()V")),
+	midAudioStop(
+		mEnv->GetStaticMethodID(mActivityClass,
+		                        "stop", "()V")),
+	midAudioResume(
+		mEnv->GetStaticMethodID(mActivityClass,
+		                        "resume", "()V")),
 	midAudioQuit(
 		mEnv->GetStaticMethodID(mActivityClass,
 								"quit", "()V"))
@@ -125,12 +131,14 @@ void AudioTrack::WriteBuffer()
 
 void AudioTrack::Stop()
 {
-
+	JNIEnv* env;
+	env->CallStaticVoidMethod(mActivityClass, midAudioStop);
 }
 
 void AudioTrack::Resume()
 {
-
+	JNIEnv* env;
+	env->CallStaticVoidMethod(mActivityClass, midAudioResume);
 }
 
 void AudioTrack::Quit()

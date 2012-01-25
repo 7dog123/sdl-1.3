@@ -31,6 +31,8 @@ private:
 	// method signatures
 	jmethodID midAudioInit;
 	jmethodID midAudioPlay;
+	jmethodID midAudioStop;
+	jmethodID midAudioResume;
 	jmethodID midAudioWriteShortBuffer;
 	jmethodID midAudioWriteByteBuffer;
 	jmethodID midAudioQuit;
