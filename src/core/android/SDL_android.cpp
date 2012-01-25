@@ -24,6 +24,7 @@
 #ifdef __ANDROID__
 
 #include "SDL_android.h"
+#include "SDL_context.h"
 
 extern "C" {
 #include "../../events/SDL_events_c.h"
@@ -32,8 +33,6 @@ extern "C" {
 #include "../../video/android/SDL_androidvideo.h"
 
 #include <android/log.h>
-#include "SDL_context.h"
-
 
 /* Implemented in audio/android/SDL_androidaudio.c */
 extern void Android_RunAudioThread();
