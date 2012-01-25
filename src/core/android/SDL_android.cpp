@@ -25,6 +25,7 @@
 
 #include "SDL_android.h"
 #include "SDL_context.h"
+#include "include.h"
 
 extern "C" {
 #include "../../events/SDL_events_c.h"
