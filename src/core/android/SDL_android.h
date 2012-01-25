@@ -21,6 +21,7 @@
 #ifndef SDL_ANDROID_ANDROID_H_
 #define SDL_ANDROID_ANDROID_H_
 #include "SDL_config.h"
+#include "SDL_asset.h"
 #include "SDL_audio.h"
 
 /* Set up for C function definitions, even when using C++ */
