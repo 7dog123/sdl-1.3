@@ -5,11 +5,12 @@
 #include <EGL/egl.h>
 #include "SDL_base.h"
 #include "SDL_sensors.h"
+#include <android_native_app_glue.h>
 namespace SDL{ namespace Android {
 class Context : public Base
 {
 public:
-	Context();
+	Context(android_app* pApp);
 
 	void flipEGL();
 	bool createEGLSurface();
@@ -19,7 +20,9 @@ public:
 	void setActivityTitle(const std::string& title);
 	void flipBuffers();
 	bool createGLContext(int majorVersion, int minorVersion);
+
 	static Context* GetContext();
+	AAssetManager* GetAssets();
 	void nativeInit();
     void nativeQuit();
     void nativePause();
@@ -42,6 +45,9 @@ protected:
 	void onResume(android_app* app);
 	void onDestroy(android_app* app);
 private:
+
+
+    android_app* mpApp;
 
     static Context* mSingleton;
 
@@ -87,8 +93,6 @@ private:
 
         bool keyInput(AInputEvent* event);
         bool touchInput(AInputEvent* event);
-
-        android_app* mpApp;
     private:
         Context& mContext;
         void _activateInput();

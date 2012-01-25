@@ -213,7 +213,6 @@ void onAppCmd(android_app* app, int32_t cmd)
 {
 	auto pContext = (Context*)app->userData;
 
-	pContext->mCommands.mpApp = app;
 #define CMD pContext->mCommands
 
 	switch( cmd )
@@ -277,15 +276,12 @@ void onAppCmd(android_app* app, int32_t cmd)
 		break;
 #endif
 	}
-
-	pContext->mCommands.mpApp = nullptr;
 }
 
 int32_t onInputEvent(struct android_app* app, AInputEvent* event)
 {
 	auto pContext = (Context*)app->userData;
 
-	pContext->mCommands.mpApp = app;
 	auto type = AInputEvent_getType(event);
 #define CMD pContext->mCommands
 
@@ -300,6 +296,11 @@ int32_t onInputEvent(struct android_app* app, AInputEvent* event)
 		return 0;
 	}
 #undef CMD
+}
+
+AAssetManager* Context::GetAssets()
+{
+    return mpApp->activity->assetManager;
 }
 
 Audio* Context::GetAudio()

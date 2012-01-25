@@ -26,11 +26,6 @@
 /* Set up for C function definitions, even when using C++ */
 #ifdef __cplusplus
 
-#include <android_native_app_glue.h>
-
-// This has to be set at app start so we always have a valid
-// Android context
-extern static android_app* GLOBAL_ANDROID_APP;
 
 /* *INDENT-OFF* */
 extern "C" {
