@@ -11,4 +11,4 @@ jobs:
         with:
           ndk-version: r21e
       - name: Build
-        run: ./build-scripts/androidbuildlibs.sh
+        run: bash ./build-scripts/androidbuildlibs.sh
